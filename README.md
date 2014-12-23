@@ -1,6 +1,22 @@
 countsource
 ===========
-A small Go utility for counting source code lines. Also counts
+A small command line utility written in Go, for counting source code lines. Also counts binaries, but only number of files and filesize.
+
+The result will look along the lines of this:
+```
+Directory processed:
+c:\mydirectory\myproject
+-------------------------------------------------
+filetype        #files       #lines          size
+-------------------------------------------------
+.css                10        3 583        95 921
+.html                1           54         3 722
+.js                 23        4 628       197 086
+.jpg                 7                    260 274
+.png               307                    495 174
+-------------------------------------------------
+Total:             348        8 265     1 052 177
+```
 
 Usage
 ---------
@@ -8,18 +24,6 @@ Give a directory as a parameter. If none is given, the executable's directory is
 ```
 countsource [directory]
 ```
-
-
-```
-Directory processed:
-c:\mydirectory\myproject
--------------------------------------------------
-filetype        #files       #lines          size
--------------------------------------------------
--------------------------------------------------
-Total:           1 083      159 965    19 744 556
-```
-
 
 Config file
 ---------
