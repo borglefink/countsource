@@ -1,7 +1,6 @@
-countsource
-===========
-A small command line utility written in Go (http://golang.org/), for counting source code lines. 
-Also counts binaries, but only number of files and filesize.
+*countsource* is a small command line utility for counting source code lines, written in Go (http://golang.org/). 
+It can also count binaries, but only number of files and filesize.
+There is a config file to configure what to count (see config section below).
 When counting source code lines, newline will be determined as type windows (CRLF), unix (LF) or older mac (CR) for each file.
 
 The result will look along the lines of this:
