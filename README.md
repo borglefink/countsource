@@ -2,13 +2,12 @@ countsource
 ===========
 A small command line utility written in Go (http://golang.org/), for counting source code lines. 
 Also counts binaries, but only number of files and filesize.
-Will for each file determine if newline is of type windows (CRLF), unix (LF) or older mac (CR), 
-and then use the correct one when counting number of source code lines in file.
+When counting source code lines, newline will be determined as type windows (CRLF), unix (LF) or older mac (CR) for each file.
 
 The result will look along the lines of this:
 ```
 Directory processed:
-c:\mydirectory\myproject
+c:\mydirectory\exampleprojectdirectory
 -------------------------------------------------
 filetype        #files       #lines          size
 -------------------------------------------------
@@ -23,7 +22,7 @@ Total:             348        8 265     1 052 177
 
 Usage
 ---------
-Give a directory as a parameter. If none is given, the executable's directory is used. 
+Give a directory as a parameter. If none is given, the executable's directory is used.
 All sub-directories will be included in the result as well.
 
 ```
