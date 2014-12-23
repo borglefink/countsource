@@ -4,6 +4,7 @@
 
 package entry
 
+// Entry
 type Entry struct {
 	ExtensionName string
 	IsBinary      bool

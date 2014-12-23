@@ -13,7 +13,6 @@ import (
 	"strings"
 )
 
-// Constants
 const (
 	windowsNewline = "\r\n"
 	unixNewline    = "\n"

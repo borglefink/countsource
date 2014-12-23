@@ -8,9 +8,7 @@ import (
 	"entry"
 )
 
-/*
- * Result
- */
+// Result
 type Result struct {
 	Directory          string
 	Extensions         map[string]*entry.Entry

@@ -18,7 +18,6 @@ import (
 	"utils"
 )
 
-// Constants
 const (
 	pathSeparator = "\\"
 )

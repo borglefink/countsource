@@ -13,9 +13,7 @@ import (
 	"strings"
 )
 
-/*
- * Config
- */
+// Config
 type Config struct {
 	Extensions         []string
 	BinaryExtensions   []string

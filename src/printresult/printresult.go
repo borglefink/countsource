@@ -14,7 +14,6 @@ import (
 	"utils"
 )
 
-// Constants
 const (
 	thousandsSeparator = ' '
 	formatString       = "%-11s %10s %12s %13s\n"
