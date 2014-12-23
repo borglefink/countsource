@@ -4,7 +4,7 @@ A small Go utility for counting source code lines.
 
 Usage
 ---------
-Give a directory as a parameter. If none is given, the executable's directory is used.
+Give a directory as a parameter. If none is given, the executable's directory is used. All sub-directories will be included in the result as well.
 ```
 countsource [directory]
 ```
