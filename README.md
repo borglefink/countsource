@@ -1,6 +1,6 @@
 countsource
 ===========
-A small command line utility written in Go (http://http://golang.org/), for counting source code lines. Also counts binaries, but only number of files and filesize.
+A small command line utility written in Go (http://golang.org/), for counting source code lines. Also counts binaries, but only number of files and filesize.
 
 The result will look along the lines of this:
 ```
