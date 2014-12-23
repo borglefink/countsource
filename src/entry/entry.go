@@ -2,11 +2,6 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-/*
- * entry.go
- *
- * Resultcontainer for extensions
- */
 package entry
 
 // Entry for each extension, counting

@@ -29,7 +29,7 @@ Config file
 ---------
 If a config file does not exist, one is created, with simple default values. Along the lines of this:
 
-```json
+```JSON
 {
   "Extensions": [
     ".css",

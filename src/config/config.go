@@ -30,11 +30,17 @@ type Config struct {
 
 var configFilename = ""
 
+// ------------------------------------------
+// init
+// ------------------------------------------
 func init() {
 	// Set the config file name to [thisexecutablefilename].config
 	configFilename = strings.Replace(filepath.Base(os.Args[0]), ".exe", ".config", 1)
 }
 
+// ------------------------------------------
+// LoadConfig
+// ------------------------------------------
 func LoadConfig() Config {
 	var sc Config
 
@@ -57,9 +63,9 @@ func LoadConfig() Config {
 	return sc
 }
 
-/*
- * createConfig - initializes a config file if one is not found
- */
+// ------------------------------------------
+// createConfig
+// ------------------------------------------
 func createConfig() {
 	var sc Config
 
@@ -104,9 +110,9 @@ func createConfig() {
 	save(sc)
 }
 
-/*
- * Save Config to disk as JSON
- */
+// ------------------------------------------
+// save
+// ------------------------------------------
 func save(sc Config) {
 	var jsonstring, err = json.MarshalIndent(&sc, "", "  ")
 	if err != nil {
