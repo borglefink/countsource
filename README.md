@@ -34,7 +34,7 @@ If a config file does not exist, one is created, with simple default values. Alo
   "Extensions": [
     ".css",
     ".html",
-    ".js",
+    ".js"
   ],
   "BinaryExtensions": [
     ".jpg",
@@ -43,11 +43,11 @@ If a config file does not exist, one is created, with simple default values. Alo
   "ExcludeDirectories": [
     "bin",
     "obj",
-    "Scripts\\jquery.ui",
+    "Scripts\\jquery.ui"
   ],
   "ExcludeFiles": [
     "countsource.config",
-    "jquery.min.js",
+    "jquery.min.js"
   ]
 }
 ```
