@@ -4,7 +4,6 @@
 
 package utils
 
-// Importing libraries
 import (
 	"bytes"
 	"fmt"

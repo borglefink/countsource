@@ -4,7 +4,6 @@
 
 package result
 
-// Importing libraries
 import (
 	"entry"
 )

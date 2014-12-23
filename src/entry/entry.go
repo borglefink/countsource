@@ -4,7 +4,6 @@
 
 package entry
 
-// Entry for each extension, counting
 type Entry struct {
 	ExtensionName string
 	IsBinary      bool

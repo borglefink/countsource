@@ -4,7 +4,6 @@
 
 package config
 
-// Importing libraries
 import (
 	"encoding/json"
 	"fmt"

@@ -4,7 +4,6 @@
 
 package count
 
-// Importing libraries
 import (
 	"fmt"
 	"io/ioutil"
@@ -24,9 +23,7 @@ const (
 	pathSeparator = "\\"
 )
 
-/*
- * Exclusions
- */
+// Exclusions
 type Exclusions struct {
 	ExcludeDirectories []string
 	ExcludeFiles       []string

@@ -4,7 +4,6 @@
 
 package printresult
 
-// Importing libraries
 import (
 	"fmt"
 	"sort"
