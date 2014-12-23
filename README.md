@@ -1,6 +1,6 @@
 countsource
 ===========
-A small Go utility for counting source code lines.
+A small Go utility for counting source code lines. Also counts
 
 Usage
 ---------
@@ -8,6 +8,18 @@ Give a directory as a parameter. If none is given, the executable's directory is
 ```
 countsource [directory]
 ```
+
+
+```
+Directory processed:
+c:\mydirectory\myproject
+-------------------------------------------------
+filetype        #files       #lines          size
+-------------------------------------------------
+-------------------------------------------------
+Total:           1 083      159 965    19 744 556
+```
+
 
 Config file
 ---------
@@ -35,7 +47,7 @@ If a config file does not exist, one is created, with simple default values. Alo
   ]
 }
 ```
-Note that directories can be specified further, to be sure to exclude elements you don't want counted.
+Note that directories can be specified in a bit more detail, to be sure to exclude elements you don't want counted.
 
 Background
 ----------
