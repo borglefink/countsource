@@ -118,11 +118,11 @@ func CountExtension(filename string, f os.FileInfo) {
 				// Slurp the whole file into memory
 				contents, err := ioutil.ReadFile(filename)
 
-				var stringContents = string(contents)
-				var newline = utils.DetermineNewline(stringContents)
-
 				// Ok, count lines
 				if err == nil {
+					var stringContents = string(contents)
+					var newline = utils.DetermineNewline(stringContents)
+
 					var numberOfLines = len(strings.Split(stringContents, newline))
 					countResult.Extensions[ext].NumberOfLines += numberOfLines
 					countResult.TotalNumberOfLines += numberOfLines
