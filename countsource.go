@@ -52,7 +52,7 @@ func forEachEntry(filename string, f os.FileInfo, err error) error {
 // main
 // ------------------------------------------
 func main() {
-	root = utils.GetDirectory(flag.Arg(0), os.Args[0])
+	root = utils.GetDirectory(flag.Arg(0), ".")
 
 	// Walking the given directory
 	err := filepath.Walk(root, forEachEntry)
