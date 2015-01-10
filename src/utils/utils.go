@@ -112,7 +112,7 @@ func Int64ToString(n int64, separator rune) string {
 // ------------------------------------------
 // GetDirectory
 // ------------------------------------------
-func GetDirectory(pathFromFlag string, pathOfExecutable string) string {
+func GetDirectory(pathFromFlag, defaultPath string) string {
 	var err error
 
 	// First non-flag argument should be the starting directory
@@ -120,7 +120,7 @@ func GetDirectory(pathFromFlag string, pathOfExecutable string) string {
 
 	// If no directory given, use the current directory
 	if len(path) == 0 {
-		path = filepath.Dir(pathOfExecutable)
+		path = filepath.Dir(defaultPath)
 	}
 
 	// Getting the full path, if necessary

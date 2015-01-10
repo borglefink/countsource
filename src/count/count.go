@@ -12,8 +12,6 @@ import (
 	"strings"
 
 	"config"
-	"entry"
-	"printresult"
 	"result"
 	"utils"
 )
@@ -49,19 +47,19 @@ func setupExclusions(sc config.Config) Exclusions {
 // setupResult
 // ------------------------------------------
 func setupResult(sc config.Config) result.Result {
-	var result = result.Result{Extensions: make(map[string]*entry.Entry)}
+	var r = result.Result{Extensions: make(map[string]*result.Entry)}
 
 	// Add extensions
 	for _, k := range sc.Extensions {
-		result.Extensions[k] = &entry.Entry{k, false, 0, 0, 0}
+		r.Extensions[k] = &result.Entry{k, false, 0, 0, 0}
 	}
 
 	// Add binary extensions
 	for _, k := range sc.BinaryExtensions {
-		result.Extensions[k] = &entry.Entry{k, true, 0, 0, 0}
+		r.Extensions[k] = &result.Entry{k, true, 0, 0, 0}
 	}
 
-	return result
+	return r
 }
 
 // ------------------------------------------
@@ -109,6 +107,7 @@ func CountExtension(filename string, f os.FileInfo) {
 		if willBeCounted {
 			countResult.Extensions[ext].NumberOfFiles += 1
 			countResult.TotalNumberOfFiles += 1
+
 			var size = f.Size()
 			countResult.Extensions[ext].Filesize += size
 			countResult.TotalSize += size
@@ -138,5 +137,5 @@ func CountExtension(filename string, f os.FileInfo) {
 // Print
 // ------------------------------------------
 func Print(root string) {
-	printresult.PrintResult(root, countResult)
+	result.PrintResult(root, countResult)
 }
