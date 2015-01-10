@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -35,7 +36,7 @@ func init() {
 // LoadConfig
 // ------------------------------------------
 func LoadConfig() Config {
-	var sc Config
+	var c Config
 
 	// Read whole the file
 	var jsonstring, err = ioutil.ReadFile(configFilename)
@@ -46,14 +47,19 @@ func LoadConfig() Config {
 		jsonstring, err = ioutil.ReadFile(configFilename)
 	}
 
-	err = json.Unmarshal(jsonstring, &sc)
+	// Strip comments from config file
+	var re = regexp.MustCompile("(?s)//.*?\n|/\\*.*?\\*/")
+	var newJsonstring = re.ReplaceAll(jsonstring, nil)
+
+	// Create config to be returned
+	err = json.Unmarshal(newJsonstring, &c)
 
 	if err != nil {
-		fmt.Printf("json.Unmarshal, %v\n", err)
-		sc = Config{}
+		fmt.Printf("Could not read the config, %v\n", err)
+		c = Config{}
 	}
 
-	return sc
+	return c
 }
 
 // ------------------------------------------
