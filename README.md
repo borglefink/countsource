@@ -1,7 +1,7 @@
 ## Description
 
 *countsource* is a small command line utility for counting source code lines, written in Go (http://golang.org/). 
-It can also count binaries, but only number of files and filesize.
+It can also count binaries (number of files and filesize).
 There is a config file to configure what to count (see config section below).
 When counting source code lines, newline will be determined as type windows (CRLF), unix (LF) or older mac (CR) for each file.
 
@@ -32,8 +32,8 @@ countsource [directory]
 
 ## Config file
 
-If a config file does not exist, one is created, with simple default values. 
-Along the lines of this:
+If a config file does not exist, one is created, with simple default values 
+along the lines of this:
 
 ```JSON
 {
@@ -60,9 +60,13 @@ Along the lines of this:
 
 Note that directories can be specified in a bit more detail, to be sure to exclude elements you don't want counted.
 
+It is now possible to put comments in the config file. 
+Only Go-type comments are allowed, like line type comments starting with //, or block comments enclosed by /* and */.
+
 ## Background
 
-I wanted to count the number of source code lines for all the source code in an ASP.NET MVC project to keep track of the size of it. So I just wrote this.
+I wanted to count the number of source code lines for all the source code in an ASP.NET MVC project 
+to keep track of the size of it. So I just wrote this.
 
 ## License
 
