@@ -7,6 +7,7 @@ package result
 import (
 	"fmt"
 	"sort"
+	"strconv"
 	"strings"
 
 	"utils"
@@ -14,8 +15,9 @@ import (
 
 const (
 	thousandsSeparator = ' '
-	formatString       = "%-11s %10s %12s %13s\n"
-	formatStringLength = 11 + 1 + 10 + 1 + 12 + 1 + 13
+	// formatString consists of "filetype", "#files", "#lines", "line%", "size"
+	formatString       = "%-11s %10s %12s %6s %13s\n"
+	formatStringLength = 11 + 1 + 10 + 1 + 12 + 1 + 6 + 1 + 13
 )
 
 // Entry
@@ -48,12 +50,12 @@ func PrintResult(root string, result Result) {
 
 	// Show result for sourcecode, only for extensions found
 	for _, ext := range keys {
-		printEntry(result.Extensions[ext])
+		printEntry(result.Extensions[ext], result.TotalNumberOfLines)
 	}
 
 	// For convenience, show result for binaries separately
 	for _, ext := range binaryKeys {
-		printEntry(result.Extensions[ext])
+		printEntry(result.Extensions[ext], 0)
 	}
 
 	// Show footer
@@ -90,18 +92,24 @@ func printHeader(root string) {
 	fmt.Printf("\nDirectory processed:\n")
 	fmt.Printf("%v\n", root)
 	fmt.Printf("%s\n", strings.Repeat("-", formatStringLength))
-	fmt.Printf(formatString, "filetype", "#files", "#lines", "size")
+	fmt.Printf(formatString, "filetype", "#files", "#lines", "line%", "size")
 	fmt.Printf("%s\n", strings.Repeat("-", formatStringLength))
 }
 
 // ------------------------------------------
 // printEntry
 // ------------------------------------------
-func printEntry(entry *Entry) {
+func printEntry(entry *Entry, totalNumberOfLines int) {
 	var numberOfLinesString = ""
+	var percentageString = ""
 
 	if !entry.IsBinary {
 		numberOfLinesString = utils.IntToString(entry.NumberOfLines, thousandsSeparator)
+
+		if totalNumberOfLines > 0 {
+			var percentage = (float64(entry.NumberOfLines) * float64(100)) / float64(totalNumberOfLines)
+			percentageString = strconv.FormatFloat(percentage, 'f', 1, 64)
+		}
 	}
 
 	fmt.Printf(
@@ -109,6 +117,7 @@ func printEntry(entry *Entry) {
 		entry.ExtensionName,
 		utils.IntToString(entry.NumberOfFiles, thousandsSeparator),
 		numberOfLinesString,
+		percentageString,
 		utils.Int64ToString(entry.Filesize, thousandsSeparator),
 	)
 }
@@ -128,6 +137,7 @@ func printFooter(result Result) {
 			"Total:",
 			utils.IntToString(result.TotalNumberOfFiles, thousandsSeparator),
 			utils.IntToString(result.TotalNumberOfLines, thousandsSeparator),
+			"100.0",
 			utils.Int64ToString(result.TotalSize, thousandsSeparator),
 		)
 	}
