@@ -7,6 +7,7 @@ package utils
 import (
 	"bytes"
 	"fmt"
+	"math"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -81,8 +82,8 @@ func IntToString(n int, separator rune) string {
 // Int64ToString
 // ------------------------------------------
 func Int64ToString(n int64, separator rune) string {
-	s := strconv.FormatInt(n, 10)
-	startOffset := 0
+	var s = strconv.FormatInt(n, 10)
+	var startOffset = 0
 	var buff bytes.Buffer
 
 	if n < 0 {
@@ -90,8 +91,8 @@ func Int64ToString(n int64, separator rune) string {
 		buff.WriteByte('-')
 	}
 
-	length := len(s)
-	commaIndex := 3 - ((length - startOffset) % 3)
+	var length = len(s)
+	var commaIndex = 3 - ((length - startOffset) % 3)
 
 	if commaIndex == 3 {
 		commaIndex = 0
@@ -107,6 +108,25 @@ func Int64ToString(n int64, separator rune) string {
 	}
 
 	return buff.String()
+}
+
+// ------------------------------------------
+// Round return rounded version of x with prec precision.
+// http://grokbase.com/t/gg/golang-nuts/12ag1s0t5y/go-nuts-re-function-round
+// ------------------------------------------
+func Round(x float64, prec int) float64 {
+	var rounder float64
+	var pow = math.Pow(10, float64(prec))
+	var intermed = x * pow
+	var _, frac = math.Modf(intermed)
+
+	if frac >= 0.5 {
+		rounder = math.Ceil(intermed)
+	} else {
+		rounder = math.Floor(intermed)
+	}
+
+	return rounder / pow
 }
 
 // ------------------------------------------

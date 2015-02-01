@@ -7,7 +7,6 @@ package result
 import (
 	"fmt"
 	"sort"
-	"strconv"
 	"strings"
 
 	"utils"
@@ -106,9 +105,10 @@ func printEntry(entry *Entry, totalNumberOfLines int) {
 	if !entry.IsBinary {
 		numberOfLinesString = utils.IntToString(entry.NumberOfLines, thousandsSeparator)
 
+		// Show percentage
 		if totalNumberOfLines > 0 {
-			var percentage = (float64(entry.NumberOfLines) * float64(100)) / float64(totalNumberOfLines)
-			percentageString = strconv.FormatFloat(percentage, 'f', 1, 64)
+			var percentage = float64(entry.NumberOfLines) * float64(100) / float64(totalNumberOfLines)
+			percentageString = fmt.Sprintf("%.1f", utils.Round(percentage, 1))
 		}
 	}
 
