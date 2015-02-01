@@ -28,7 +28,7 @@ var configFilename = ""
 // init
 // ------------------------------------------
 func init() {
-	fullFilePath, _ := filepath.Abs(os.Args[0])
+	var fullFilePath, _ = filepath.Abs(os.Args[0])
 
 	// Set the config file name to [thisexecutablepath\thisexecutablefilename].config
 	configFilename = fmt.Sprintf("%s\\%s", filepath.Dir(fullFilePath), strings.Replace(filepath.Base(fullFilePath), ".exe", ".config", 1))

@@ -101,7 +101,7 @@ func CountExtension(filename string, f os.FileInfo) {
 		var ext = filepath.Ext(filename)
 
 		// Is the extension one of the relevant ones?
-		_, willBeCounted := countResult.Extensions[ext]
+		var _, willBeCounted = countResult.Extensions[ext]
 
 		// If yes, proceed with counting
 		if willBeCounted {
@@ -115,7 +115,7 @@ func CountExtension(filename string, f os.FileInfo) {
 			// Binary files will not have "number of lines"
 			if !countResult.Extensions[ext].IsBinary {
 				// Slurp the whole file into memory
-				contents, err := ioutil.ReadFile(filename)
+				var contents, err = ioutil.ReadFile(filename)
 
 				// Ok, count lines
 				if err == nil {

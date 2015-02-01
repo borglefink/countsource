@@ -55,7 +55,7 @@ func main() {
 	root = utils.GetDirectory(flag.Arg(0), ".")
 
 	// Walking the given directory
-	err := filepath.Walk(root, forEachEntry)
+	var err = filepath.Walk(root, forEachEntry)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		os.Exit(-1)
