@@ -103,7 +103,7 @@ func createConfig() {
 
 	// Directories to exclude
 	sc.ExcludeFiles = []string{
-		configFilename,
+		filepath.Base(configFilename),
 		"jquery.min.js",
 		"jquery.ui.js",
 	}
