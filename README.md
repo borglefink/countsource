@@ -9,21 +9,21 @@ The result will look along the lines of this:
 ```
 Directory processed:
 c:\mydirectory\exampleprojectdirectory
--------------------------------------------------
-filetype        #files       #lines          size
--------------------------------------------------
-.css                10        3 583        95 921
-.html                1           54         3 722
-.js                 23        4 628       197 086
-.jpg                 7                    260 274
-.png               307                    495 174
--------------------------------------------------
-Total:             348        8 265     1 052 177
+--------------------------------------------------------
+filetype        #files       #lines  line%          size
+--------------------------------------------------------
+.css                 9        3 512   42.3        92 168
+.html                1          229    2.8         7 626
+.js                 22        4 563   54.9       195 256
+.jpg                 7                           260 274
+.png               120                           211 318
+--------------------------------------------------------
+Total:             159        8 304  100.0       766 642
 ```
 
 ## Usage
 
-Give a directory as a parameter. If none is given, the executable's directory is used.
+Give a directory as a parameter. If none is given, the current directory is used.
 All sub-directories will be included in the result as well.
 
 ```
@@ -32,10 +32,14 @@ countsource [directory]
 
 ## Config file
 
+The config file is expected to be found in the same directory as the executable.
 If a config file does not exist, one is created, with simple default values 
 along the lines of this:
 
 ```JSON
+/*
+ * Config file for exampleproject
+ */
 {
   "Extensions": [
     ".css",
@@ -60,7 +64,8 @@ along the lines of this:
 
 Note that directories can be specified in a bit more detail, to be sure to exclude elements you don't want counted.
 
-It is now possible to put comments in the config file. 
+It is possible to put comments in the config file. 
+Note that comments are not allowed in json, so these comments are stripped from the config when interpreting it.
 Only Go-type comments are allowed, like line type comments starting with //, or block comments enclosed by /* and */.
 
 ## Background
