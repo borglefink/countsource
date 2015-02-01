@@ -16,10 +16,6 @@ import (
 	"utils"
 )
 
-const (
-	pathSeparator = "\\"
-)
-
 // Exclusions
 type Exclusions struct {
 	ExcludeDirectories []string
@@ -28,6 +24,7 @@ type Exclusions struct {
 
 var countResult result.Result
 var exclusions Exclusions
+var pathSeparator = "/"
 
 // ------------------------------------------
 // setupExclusions
@@ -82,6 +79,7 @@ func isExcluded(filename string) bool {
 // Initialize
 // ------------------------------------------
 func Initialize() {
+	pathSeparator = utils.GetPathSeparator()
 	var sc = config.LoadConfig()
 
 	exclusions = setupExclusions(sc)

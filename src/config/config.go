@@ -12,6 +12,8 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"utils"
 )
 
 // Config
@@ -22,16 +24,19 @@ type Config struct {
 	ExcludeFiles       []string
 }
 
+var pathSeparator = "/"
 var configFilename = ""
 
 // ------------------------------------------
 // init
 // ------------------------------------------
 func init() {
+	pathSeparator = utils.GetPathSeparator()
+
 	var fullFilePath, _ = filepath.Abs(os.Args[0])
 
 	// Set the config file name to [thisexecutablepath\thisexecutablefilename].config
-	configFilename = fmt.Sprintf("%s\\%s", filepath.Dir(fullFilePath), strings.Replace(filepath.Base(fullFilePath), ".exe", ".config", 1))
+	configFilename = fmt.Sprintf("%s%s%s", filepath.Dir(fullFilePath), pathSeparator, strings.Replace(filepath.Base(fullFilePath), ".exe", ".config", 1))
 }
 
 // ------------------------------------------
@@ -97,7 +102,7 @@ func createConfig() {
 		".svn",
 		"bin",
 		"obj",
-		"Scripts\\jquery.ui",
+		fmt.Sprintf("Scripts%sjquery.ui", pathSeparator),
 		"_svn",
 	}
 

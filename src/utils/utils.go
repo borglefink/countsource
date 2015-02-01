@@ -15,9 +15,11 @@ import (
 )
 
 const (
-	windowsNewline = "\r\n"
-	unixNewline    = "\n"
-	macNewline     = "\r"
+	windowsNewline       = "\r\n"
+	unixNewline          = "\n"
+	macNewline           = "\r"
+	unixPathSeparator    = "/"
+	windowsPathSeparator = "\\"
 )
 
 // ------------------------------------------
@@ -161,4 +163,15 @@ func GetDirectory(pathFromFlag, defaultPath string) string {
 	}
 
 	return path
+}
+
+func IsWindows() bool {
+	return strings.Index(os.Getenv("OS"), "Windows") >= 0
+}
+
+func GetPathSeparator() string {
+	if IsWindows() {
+		return windowsPathSeparator
+	}
+	return unixPathSeparator
 }
