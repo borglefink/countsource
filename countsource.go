@@ -54,7 +54,7 @@ func forEachEntry(filename string, f os.FileInfo, err error) error {
 func main() {
 	root = utils.GetDirectory(flag.Arg(0), ".")
 
-	// Walking the given directory
+	// Processing the given directory
 	var err = filepath.Walk(root, forEachEntry)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
