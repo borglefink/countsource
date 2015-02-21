@@ -33,7 +33,7 @@ countsource [directory] [--dir] [--file] [--inc] [--excl]
 The optional parameters is for analysis/debug, showing which directories or files are included or excluded.
 If both *inc* and *excl* is given, they cancel each other out.
 
-use *countsource --?* to show usage.
+Use *countsource --?* to show usage.
 
 ## Config file
 
