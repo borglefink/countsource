@@ -9,16 +9,16 @@ The result will look along the lines of this:
 ```
 Directory processed:
 c:\mydirectory\exampleprojectdirectory
---------------------------------------------------------
-filetype        #files       #lines  line%          size
---------------------------------------------------------
-.css                 9        3 512   42.3        92 168
-.html                1          229    2.8         7 626
-.js                 22        4 563   54.9       195 256
-.jpg                 7                           260 274
-.png               120                           211 318
---------------------------------------------------------
-Total:             159        8 304  100.0       766 642
+---------------------------------------------------------------
+filetype        #files       #lines  line%          size  size%
+---------------------------------------------------------------
+.css                 9        3 512   42.3        92 168   12.0
+.html                1          229    2.8         7 626    1.0
+.js                 22        4 563   54.9       195 256   25.5
+.jpg                 7                           260 274   33.9
+.png               120                           211 318   27.6
+---------------------------------------------------------------
+Total:             159        8 304  100.0       766 642  100.0
 ```
 
 ## Usage
@@ -27,8 +27,13 @@ Give a directory as a parameter. If none is given, the current directory is used
 All sub-directories will be included in the result as well.
 
 ```
-countsource [directory]
+countsource [directory] [--dir] [--file] [--inc] [--excl]
 ```
+
+The optional parameters is for analysis/debug, showing which directories or files are included or excluded.
+If both *inc* and *excl* is given, they cancel each other out.
+
+use *countsource --?* to show usage.
 
 ## Config file
 
