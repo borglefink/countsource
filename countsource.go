@@ -31,11 +31,6 @@ func init() {
 
 	var help = flag.Bool("?", false, "this help information")
 
-	if *showOnlyIncluded && *showOnlyExcluded {
-		*showOnlyIncluded = false
-		*showOnlyExcluded = false
-	}
-
 	flag.Usage = usage
 	flag.Parse()
 

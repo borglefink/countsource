@@ -28,8 +28,8 @@ var rootPath = ""
 var pathSeparator = "/"
 var showDirectoryStatus = false
 var showFileStatus = false
-var showOnlyIncluded = false
-var showOnlyExcluded = false
+var showOnlyIncluded = true
+var showOnlyExcluded = true
 
 // ------------------------------------------
 // Initialize
