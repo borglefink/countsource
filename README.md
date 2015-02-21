@@ -30,8 +30,8 @@ All sub-directories will be included in the result as well.
 countsource [directory] [--dir] [--file] [--inc] [--excl]
 ```
 
-The optional parameters is for analysis/debug, showing which directories or files are included or excluded.
-If both *inc* and *excl* is given, they cancel each other out.
+The optional parameters is for analysis/debug, showing which directories or files are 
+included or excluded. By default shows all files and directories.
 
 Use *countsource --?* to show usage.
 
