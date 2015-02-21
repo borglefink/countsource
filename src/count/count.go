@@ -24,7 +24,30 @@ type Exclusions struct {
 
 var countResult result.Result
 var exclusions Exclusions
+var rootPath = ""
 var pathSeparator = "/"
+var showDirectoryStatus = false
+var showFileStatus = false
+var showOnlyIncluded = false
+var showOnlyExcluded = false
+
+// ------------------------------------------
+// Initialize
+// ------------------------------------------
+func Initialize(root string, showDirectories, showFiles, showOnlyInc, showOnlyExcl bool) {
+	rootPath = root
+	showDirectoryStatus = showDirectories
+	showFileStatus = showFiles
+
+	showOnlyIncluded = showOnlyInc
+	showOnlyExcluded = showOnlyExcl
+
+	pathSeparator = utils.GetPathSeparator()
+	var sc = config.LoadConfig()
+
+	exclusions = setupExclusions(sc)
+	countResult = setupResult(sc)
+}
 
 // ------------------------------------------
 // setupExclusions
@@ -66,24 +89,49 @@ func isExcluded(filename string) bool {
 	// Get full path of file
 	var fulldir, _ = filepath.Abs(filename)
 
-	var excluded = utils.IsInString(fulldir, exclusions.ExcludeDirectories)
+	var excluded = utils.IsInString(fulldir+pathSeparator, exclusions.ExcludeDirectories)
 
 	if !excluded {
-		excluded = utils.IsInSlice(exclusions.ExcludeFiles, filename)
+		excluded = utils.IsInSlice(exclusions.ExcludeFiles, filepath.Base(filename))
 	}
 
 	return excluded
 }
 
 // ------------------------------------------
-// Initialize
+// ShowDirectoryOrFile
 // ------------------------------------------
-func Initialize() {
-	pathSeparator = utils.GetPathSeparator()
-	var sc = config.LoadConfig()
+func ShowDirectoryOrFile(isDir bool, filename string, excluded bool) {
+	var status = ""
 
-	exclusions = setupExclusions(sc)
-	countResult = setupResult(sc)
+	if showDirectoryStatus && isDir {
+		if excluded {
+			status = " EXCLUDED"
+		} else {
+			status = ""
+		}
+
+		if (showOnlyIncluded && !excluded) || (showOnlyExcluded && excluded) || (!showOnlyIncluded && !showOnlyExcluded) {
+			fmt.Printf("Directory %s%s\n", strings.Replace(filename, rootPath+pathSeparator, "", 1), status)
+		}
+	}
+
+	if showFileStatus && !isDir {
+		var indent = "   "
+		if !showDirectoryStatus {
+			indent = "File "
+		}
+
+		if excluded {
+			status = " EXCLUDED"
+		} else {
+			status = ""
+		}
+
+		if (showOnlyIncluded && !excluded) || (showOnlyExcluded && excluded) || (!showOnlyIncluded && !showOnlyExcluded) {
+			fmt.Printf("%s %s%s\n", indent, strings.Replace(filename, rootPath+pathSeparator, "", 1), status)
+		}
+	}
 }
 
 // ------------------------------------------
@@ -92,9 +140,12 @@ func Initialize() {
 func CountExtension(filename string, f os.FileInfo) {
 	// Default excluded if it is a directory
 	// If not, check for exclusions
-	var excluded = f.IsDir() || isExcluded(filename)
+	//var excluded = f.IsDir() || isExcluded(filename)
+	var excluded = isExcluded(filename)
 
-	if !excluded {
+	ShowDirectoryOrFile(f.IsDir(), filename, excluded)
+
+	if !f.IsDir() && !excluded {
 		// Extension for the entry we're looking at
 		var ext = filepath.Ext(filename)
 
@@ -132,8 +183,15 @@ func CountExtension(filename string, f os.FileInfo) {
 }
 
 // ------------------------------------------
+// PrintAnalyticsHeader
+// ------------------------------------------
+func PrintAnalyticsHeader(showDirectories, showFiles, showOnlyIncluded, showOnlyExcluded bool) {
+	result.PrintAnalyticsHeader(showDirectories, showFiles, showOnlyIncluded, showOnlyExcluded)
+}
+
+// ------------------------------------------
 // Print
 // ------------------------------------------
-func Print(root string) {
-	result.PrintResult(root, countResult)
+func Print() {
+	result.PrintResult(rootPath, countResult)
 }

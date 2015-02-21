@@ -14,9 +14,9 @@ import (
 
 const (
 	thousandsSeparator = ' '
-	// formatString consists of "filetype", "#files", "#lines", "line%", "size"
-	formatString       = "%-11s %10s %12s %6s %13s\n"
-	formatStringLength = 11 + 1 + 10 + 1 + 12 + 1 + 6 + 1 + 13
+	// formatString consists of "filetype", "#files", "#lines", "line%", "size", "size%"
+	formatString       = "%-11s %10s %12s %6s %13s %6s\n"
+	formatStringLength = 11 + 1 + 10 + 1 + 12 + 1 + 6 + 1 + 13 + 1 + 6
 )
 
 // Entry
@@ -38,6 +38,37 @@ type Result struct {
 }
 
 // ------------------------------------------
+// PrintAnalyticsHeader
+// ------------------------------------------
+func PrintAnalyticsHeader(showDirectories, showFiles, showOnlyIncluded, showOnlyExcluded bool) {
+	if showDirectories || showFiles {
+		fmt.Println()
+	}
+
+	if showDirectories {
+		if showOnlyIncluded {
+			fmt.Printf("Shows included directories.\n")
+		}
+		if showOnlyExcluded {
+			fmt.Printf("Shows excluded directories.\n")
+		}
+	}
+
+	if showFiles {
+		if showOnlyIncluded {
+			fmt.Printf("Shows included files.\n")
+		}
+		if showOnlyExcluded {
+			fmt.Printf("Shows excluded files.\n")
+		}
+	}
+
+	if showDirectories || showFiles {
+		fmt.Printf("---------------------------\n")
+	}
+}
+
+// ------------------------------------------
 // PrintResult
 // ------------------------------------------
 func PrintResult(root string, result Result) {
@@ -49,12 +80,12 @@ func PrintResult(root string, result Result) {
 
 	// Show result for sourcecode, only for extensions found
 	for _, ext := range keys {
-		printEntry(result.Extensions[ext], result.TotalNumberOfLines)
+		printEntry(result.Extensions[ext], result.TotalNumberOfLines, result.TotalSize)
 	}
 
 	// For convenience, show result for binaries separately
 	for _, ext := range binaryKeys {
-		printEntry(result.Extensions[ext], 0)
+		printEntry(result.Extensions[ext], 0, result.TotalSize)
 	}
 
 	// Show footer
@@ -91,14 +122,14 @@ func printHeader(root string) {
 	fmt.Printf("\nDirectory processed:\n")
 	fmt.Printf("%v\n", root)
 	fmt.Printf("%s\n", strings.Repeat("-", formatStringLength))
-	fmt.Printf(formatString, "filetype", "#files", "#lines", "line%", "size")
+	fmt.Printf(formatString, "filetype", "#files", "#lines", "line%", "size", "size%")
 	fmt.Printf("%s\n", strings.Repeat("-", formatStringLength))
 }
 
 // ------------------------------------------
 // printEntry
 // ------------------------------------------
-func printEntry(entry *Entry, totalNumberOfLines int) {
+func printEntry(entry *Entry, totalNumberOfLines int, totalSize int64) {
 	var numberOfLinesString = ""
 	var percentageString = ""
 
@@ -112,6 +143,9 @@ func printEntry(entry *Entry, totalNumberOfLines int) {
 		}
 	}
 
+	var sizePercentage = float64(entry.Filesize) * float64(100) / float64(totalSize)
+	var sizePercentageString = fmt.Sprintf("%.1f", utils.Round(sizePercentage, 1))
+
 	fmt.Printf(
 		formatString,
 		entry.ExtensionName,
@@ -119,6 +153,7 @@ func printEntry(entry *Entry, totalNumberOfLines int) {
 		numberOfLinesString,
 		percentageString,
 		utils.Int64ToString(entry.Filesize, thousandsSeparator),
+		sizePercentageString,
 	)
 }
 
@@ -139,6 +174,7 @@ func printFooter(result Result) {
 			utils.IntToString(result.TotalNumberOfLines, thousandsSeparator),
 			"100.0",
 			utils.Int64ToString(result.TotalSize, thousandsSeparator),
+			"100.0",
 		)
 	}
 }
