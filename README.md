@@ -31,7 +31,7 @@ countsource [directory] [--dir] [--file] [--inc] [--excl]
 ```
 
 The optional parameters is for analysis/debug, showing which directories or files are 
-included or excluded. By default both included and excluded items are shown.
+included or excluded. By default both included and excluded items is shown.
 
 Use *countsource --?* to show usage.
 
