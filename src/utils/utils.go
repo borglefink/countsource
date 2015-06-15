@@ -172,6 +172,9 @@ func IsWindows() bool {
 	return strings.Index(os.Getenv("OS"), "Windows") >= 0
 }
 
+// ------------------------------------------
+// GetPathSeparator
+// ------------------------------------------
 func GetPathSeparator() string {
 	if IsWindows() {
 		return windowsPathSeparator
