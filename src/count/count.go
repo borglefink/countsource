@@ -11,8 +11,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"config"
-	"result"
 	"utils"
 )
 
@@ -22,7 +20,7 @@ type Exclusions struct {
 	ExcludeFiles       []string
 }
 
-var countResult result.Result
+var countResult Result
 var exclusions Exclusions
 var rootPath = ""
 var pathSeparator = "/"
@@ -43,7 +41,7 @@ func Initialize(root string, showDirectories, showFiles, showOnlyInc, showOnlyEx
 	showOnlyExcluded = showOnlyExcl
 
 	pathSeparator = utils.GetPathSeparator()
-	var sc = config.LoadConfig()
+	var sc = LoadConfig()
 
 	exclusions = setupExclusions(sc)
 	countResult = setupResult(sc)
@@ -52,7 +50,7 @@ func Initialize(root string, showDirectories, showFiles, showOnlyInc, showOnlyEx
 // ------------------------------------------
 // setupExclusions
 // ------------------------------------------
-func setupExclusions(sc config.Config) Exclusions {
+func setupExclusions(sc Config) Exclusions {
 	var exclusions = Exclusions{sc.ExcludeDirectories, sc.ExcludeFiles}
 
 	// Initialise ExcludeDirectories with searchable criteria
@@ -66,17 +64,17 @@ func setupExclusions(sc config.Config) Exclusions {
 // ------------------------------------------
 // setupResult
 // ------------------------------------------
-func setupResult(sc config.Config) result.Result {
-	var r = result.Result{Extensions: make(map[string]*result.Entry)}
+func setupResult(sc Config) Result {
+	var r = Result{Extensions: make(map[string]*Entry)}
 
 	// Add extensions
 	for _, k := range sc.Extensions {
-		r.Extensions[k] = &result.Entry{k, false, 0, 0, 0}
+		r.Extensions[k] = &Entry{k, false, 0, 0, 0}
 	}
 
 	// Add binary extensions
 	for _, k := range sc.BinaryExtensions {
-		r.Extensions[k] = &result.Entry{k, true, 0, 0, 0}
+		r.Extensions[k] = &Entry{k, true, 0, 0, 0}
 	}
 
 	return r
@@ -183,15 +181,8 @@ func CountExtension(filename string, f os.FileInfo) {
 }
 
 // ------------------------------------------
-// PrintAnalyticsHeader
-// ------------------------------------------
-func PrintAnalyticsHeader(showDirectories, showFiles, showOnlyIncluded, showOnlyExcluded bool) {
-	result.PrintAnalyticsHeader(showDirectories, showFiles, showOnlyIncluded, showOnlyExcluded)
-}
-
-// ------------------------------------------
 // Print
 // ------------------------------------------
 func Print() {
-	result.PrintResult(rootPath, countResult)
+	PrintResult(rootPath, countResult)
 }
