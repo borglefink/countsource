@@ -165,6 +165,9 @@ func GetDirectory(pathFromFlag, defaultPath string) string {
 	return path
 }
 
+// ------------------------------------------
+// IsWindows
+// ------------------------------------------
 func IsWindows() bool {
 	return strings.Index(os.Getenv("OS"), "Windows") >= 0
 }
