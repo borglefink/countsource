@@ -28,17 +28,32 @@ var showDirectoryStatus = false
 var showFileStatus = false
 var showOnlyIncluded = true
 var showOnlyExcluded = true
+var showBigFiles = 0
+var bigFiles = make(FileSizes, 0)
+
+type FileSize struct {
+	Name  string
+	Size  int64
+	Lines int
+}
+type FileSizes []FileSize
+
+//func (p FileSizes) Add(name string, size int64) { p = append(p, FileSize{name, size}) }
+func (p FileSizes) Len() int           { return len(p) }
+func (p FileSizes) Less(i, j int) bool { return p[i].Lines > p[j].Lines }
+func (p FileSizes) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 
 // ------------------------------------------
 // Initialize
 // ------------------------------------------
-func Initialize(root string, showDirectories, showFiles, showOnlyInc, showOnlyExcl bool) {
+func Initialize(root string, showDirectories, showFiles, showOnlyInc, showOnlyExcl bool, showBig int) {
 	rootPath = root
 	showDirectoryStatus = showDirectories
 	showFileStatus = showFiles
 
 	showOnlyIncluded = showOnlyInc
 	showOnlyExcluded = showOnlyExcl
+	showBigFiles = showBig
 
 	pathSeparator = utils.GetPathSeparator()
 	var sc = LoadConfig()
@@ -172,6 +187,7 @@ func CountExtension(filename string, f os.FileInfo) {
 					var numberOfLines = len(strings.Split(stringContents, newline))
 					countResult.Extensions[ext].NumberOfLines += numberOfLines
 					countResult.TotalNumberOfLines += numberOfLines
+					bigFiles = append(bigFiles, FileSize{f.Name(), size, numberOfLines}) // filename
 				} else {
 					fmt.Println("Problem reading inputfile %s, error:%v", filename, err)
 				}
@@ -184,5 +200,5 @@ func CountExtension(filename string, f os.FileInfo) {
 // Print
 // ------------------------------------------
 func Print() {
-	PrintResult(rootPath, countResult)
+	PrintResult(rootPath, countResult, bigFiles)
 }

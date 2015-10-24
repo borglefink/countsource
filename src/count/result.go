@@ -71,7 +71,7 @@ func PrintAnalyticsHeader(showDirectories, showFiles, showOnlyIncluded, showOnly
 // ------------------------------------------
 // PrintResult
 // ------------------------------------------
-func PrintResult(root string, result Result) {
+func PrintResult(root string, result Result, bigFiles FileSizes) {
 	// Show result header
 	printHeader(root)
 
@@ -90,6 +90,15 @@ func PrintResult(root string, result Result) {
 
 	// Show footer
 	printFooter(result)
+
+	if showBigFiles > 0 {
+		sort.Sort(bigFiles)
+		fmt.Printf("\n\nThe %d biggest files are:\n", showBigFiles)
+		fmt.Printf("-------------------------------------------------\n")
+		for i := 0; i < len(bigFiles) && i < 50; i++ {
+			fmt.Printf("%-42s %6d\n", bigFiles[i].Name, bigFiles[i].Lines)
+		}
+	}
 }
 
 // ------------------------------------------
