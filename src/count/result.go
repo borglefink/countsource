@@ -93,9 +93,9 @@ func PrintResult(root string, result Result, bigFiles FileSizes) {
 
 	if showBigFiles > 0 {
 		sort.Sort(bigFiles)
-		fmt.Printf("\n\nThe %d biggest files are:\n", showBigFiles)
+		fmt.Printf("\n\nThe %3d largest files are:                 #lines\n", showBigFiles)
 		fmt.Printf("-------------------------------------------------\n")
-		for i := 0; i < len(bigFiles) && i < 50; i++ {
+		for i := 0; i < showBigFiles; i++ {
 			fmt.Printf("%-42s %6d\n", bigFiles[i].Name, bigFiles[i].Lines)
 		}
 	}
