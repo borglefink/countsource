@@ -37,7 +37,12 @@ func init() {
 
 	// Set the config file name to [thisexecutablepath\thisexecutablefilename].config
 	configFilename = fmt.Sprintf("%s%s%s", filepath.Dir(fullFilePath), configPathSeparator, strings.Replace(filepath.Base(fullFilePath), ".exe", ".config", 1))
+
+	if strings.LastIndex(configFilename, ".config") < len(configFilename)-7 {
+		configFilename += ".config"
+	}
 }
+
 
 // ------------------------------------------
 // LoadConfig
