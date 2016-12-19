@@ -151,6 +151,10 @@ func ShowDirectoryOrFile(isDir bool, filename string, excluded bool) {
 // CountExtension
 // ------------------------------------------
 func CountExtension(filename string, f os.FileInfo) {
+	if f == nil {
+		return
+	}
+
 	// Default excluded if it is a directory
 	// If not, check for exclusions
 	//var excluded = f.IsDir() || isExcluded(filename)
