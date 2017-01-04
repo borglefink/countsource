@@ -2,14 +2,12 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package count
+package main
 
 import (
 	"fmt"
 	"sort"
 	"strings"
-
-	"utils"
 )
 
 const (
@@ -19,92 +17,71 @@ const (
 	formatStringLength = 11 + 1 + 10 + 1 + 12 + 1 + 6 + 1 + 13 + 1 + 6
 )
 
-// Entry
-type Entry struct {
-	ExtensionName string
-	IsBinary      bool
-	NumberOfFiles int
-	NumberOfLines int
-	Filesize      int64
-}
-
-// Result
-type Result struct {
-	Directory          string
-	Extensions         map[string]*Entry
-	TotalNumberOfFiles int
-	TotalNumberOfLines int
-	TotalSize          int64
-}
-
-// ------------------------------------------
-// PrintAnalyticsHeader
-// ------------------------------------------
-func PrintAnalyticsHeader(showDirectories, showFiles, showOnlyIncluded, showOnlyExcluded bool) {
-	if showDirectories || showFiles {
+// printAnalyticsHeader prints the header
+func printAnalyticsHeader() {
+	if *showDirectories || *showFiles {
 		fmt.Println()
 	}
 
-	if showDirectories {
-		if showOnlyIncluded {
+	if *showDirectories {
+		if *showOnlyIncluded {
 			fmt.Printf("Shows included directories.\n")
 		}
-		if showOnlyExcluded {
+		if *showOnlyExcluded {
 			fmt.Printf("Shows excluded directories.\n")
 		}
 	}
 
-	if showFiles {
-		if showOnlyIncluded {
+	if *showFiles {
+		if *showOnlyIncluded {
 			fmt.Printf("Shows included files.\n")
 		}
-		if showOnlyExcluded {
+		if *showOnlyExcluded {
 			fmt.Printf("Shows excluded files.\n")
 		}
 	}
 
-	if showDirectories || showFiles {
+	if *showDirectories || *showFiles {
 		fmt.Printf("---------------------------\n")
 	}
 }
 
-// ------------------------------------------
-// PrintResult
-// ------------------------------------------
-func PrintResult(root string, result Result, bigFiles FileSizes) {
+// printResult
+func printResult() {
+	//
 	// Show result header
 	printHeader(root)
 
 	// Sorting keys for presentation
-	var keys, binaryKeys = getKeys(result.Extensions)
+	var keys, binaryKeys = getKeys(countResult.Extensions)
 
 	// Show result for sourcecode, only for extensions found
 	for _, ext := range keys {
-		printEntry(result.Extensions[ext], result.TotalNumberOfLines, result.TotalSize)
+		printEntry(countResult.Extensions[ext], countResult.TotalNumberOfLines, countResult.TotalSize)
 	}
 
 	// For convenience, show result for binaries separately
 	for _, ext := range binaryKeys {
-		printEntry(result.Extensions[ext], 0, result.TotalSize)
+		printEntry(countResult.Extensions[ext], 0, countResult.TotalSize)
 	}
 
 	// Show footer
-	printFooter(result)
+	printFooter(countResult)
 
-	if showBigFiles > 0 {
+	if *showBigFiles > 0 {
 		sort.Sort(bigFiles)
-		fmt.Printf("\n\nThe %3d largest files are:                 #lines\n", showBigFiles)
+		fmt.Printf("\n\nThe %3d largest files are:                 #lines\n", *showBigFiles)
 		fmt.Printf("-------------------------------------------------\n")
-		for i := 0; i < showBigFiles; i++ {
-			fmt.Printf("%-42s %6d\n", bigFiles[i].Name, bigFiles[i].Lines)
+		for i := 0; i < *showBigFiles; i++ {
+			if i < len(bigFiles) {
+				fmt.Printf("%-42s %6d\n", bigFiles[i].Name, bigFiles[i].Lines)
+			}
 		}
 	}
 }
 
-// ------------------------------------------
 // getKeys
-// ------------------------------------------
-func getKeys(extensions map[string]*Entry) ([]string, []string) {
+func getKeys(extensions map[string]*ResultEntry) ([]string, []string) {
 	var keys []string
 	var binaryKeys []string
 
@@ -124,9 +101,7 @@ func getKeys(extensions map[string]*Entry) ([]string, []string) {
 	return keys, binaryKeys
 }
 
-// ------------------------------------------
 // printHeader
-// ------------------------------------------
 func printHeader(root string) {
 	fmt.Printf("\nDirectory processed:\n")
 	fmt.Printf("%v\n", root)
@@ -135,40 +110,36 @@ func printHeader(root string) {
 	fmt.Printf("%s\n", strings.Repeat("-", formatStringLength))
 }
 
-// ------------------------------------------
 // printEntry
-// ------------------------------------------
-func printEntry(entry *Entry, totalNumberOfLines int, totalSize int64) {
+func printEntry(entry *ResultEntry, totalNumberOfLines int, totalSize int64) {
 	var numberOfLinesString = ""
 	var percentageString = ""
 
 	if !entry.IsBinary {
-		numberOfLinesString = utils.IntToString(entry.NumberOfLines, thousandsSeparator)
+		numberOfLinesString = intToString(entry.NumberOfLines, thousandsSeparator)
 
 		// Show percentage
 		if totalNumberOfLines > 0 {
 			var percentage = float64(entry.NumberOfLines) * float64(100) / float64(totalNumberOfLines)
-			percentageString = fmt.Sprintf("%.1f", utils.Round(percentage, 1))
+			percentageString = fmt.Sprintf("%.1f", round(percentage, 1))
 		}
 	}
 
 	var sizePercentage = float64(entry.Filesize) * float64(100) / float64(totalSize)
-	var sizePercentageString = fmt.Sprintf("%.1f", utils.Round(sizePercentage, 1))
+	var sizePercentageString = fmt.Sprintf("%.1f", round(sizePercentage, 1))
 
 	fmt.Printf(
 		formatString,
 		entry.ExtensionName,
-		utils.IntToString(entry.NumberOfFiles, thousandsSeparator),
+		intToString(entry.NumberOfFiles, thousandsSeparator),
 		numberOfLinesString,
 		percentageString,
-		utils.Int64ToString(entry.Filesize, thousandsSeparator),
+		int64ToString(entry.Filesize, thousandsSeparator),
 		sizePercentageString,
 	)
 }
 
-// ------------------------------------------
 // printFooter
-// ------------------------------------------
 func printFooter(result Result) {
 	// Show footer
 	if result.TotalNumberOfFiles == 0 {
@@ -179,10 +150,10 @@ func printFooter(result Result) {
 		fmt.Printf(
 			formatString,
 			"Total:",
-			utils.IntToString(result.TotalNumberOfFiles, thousandsSeparator),
-			utils.IntToString(result.TotalNumberOfLines, thousandsSeparator),
+			intToString(result.TotalNumberOfFiles, thousandsSeparator),
+			intToString(result.TotalNumberOfLines, thousandsSeparator),
 			"100.0",
-			utils.Int64ToString(result.TotalSize, thousandsSeparator),
+			int64ToString(result.TotalSize, thousandsSeparator),
 			"100.0",
 		)
 	}

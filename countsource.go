@@ -11,30 +11,27 @@ import (
 	"path/filepath"
 
 	"github.com/MichaelTJones/walk"
-
-	"count"
-	"utils"
 )
 
-var root string
-var showDirectories *bool
-var showFiles *bool
-var showOnlyIncluded *bool
-var showOnlyExcluded *bool
-var showBigFiles *int
-
-// ------------------------------------------
-// init
-// ------------------------------------------
-func init() {
-	showDirectories = flag.Bool("dir", false, "show exclusion status of directories in path.")
-	showFiles = flag.Bool("file", false, "show exclusion status of files in path.")
+var (
+	root             = getDirectory(flag.Arg(0), ".")
+	showDirectories  = flag.Bool("dir", false, "show exclusion status of directories in path.")
+	showFiles        = flag.Bool("file", false, "show exclusion status of files in path.")
 	showOnlyIncluded = flag.Bool("inc", false, "show only included files/directories.")
 	showOnlyExcluded = flag.Bool("excl", false, "show only excluded files/directories.")
-	showBigFiles = flag.Int("big", 0, "show the x largest files")
+	showBigFiles     = flag.Int("big", 0, "show the x largest files")
+	help             = flag.Bool("?", false, "this help information")
+	config           Config
+)
 
-	var help = flag.Bool("?", false, "this help information")
+var countResult Result
+var exclusions Exclusions
+var pathSeparator = getPathSeparator()
+var bigFiles = make(fileSizes, 0)
+var configFilename string
 
+// init
+func init() {
 	flag.Usage = usage
 	flag.Parse()
 
@@ -42,12 +39,15 @@ func init() {
 		usage()
 	}
 
-	count.PrintAnalyticsHeader(*showDirectories, *showFiles, *showOnlyIncluded, *showOnlyExcluded)
+	// Load config and prepare for parsing directory
+	configFilename = getConfigFileName()
+	config = loadConfig()
+	exclusions = config.getExclusions()
+	countResult = config.setupResult()
+	printAnalyticsHeader()
 }
 
-// ------------------------------------------
 // usage
-// ------------------------------------------
 func usage() {
 	var executableName = filepath.Base(os.Args[0])
 	fmt.Fprintf(os.Stderr, "\nCOUNTSOURCE (C) Copyright 2014-2015 Erlend Johannessen\n")
@@ -58,30 +58,15 @@ func usage() {
 	os.Exit(0)
 }
 
-// ------------------------------------------
-// forEachEntry
-// ------------------------------------------
-func forEachEntry(filename string, f os.FileInfo, err error) error {
-	count.CountExtension(filename, f)
-	return nil
-}
-
-// ------------------------------------------
 // main
-// ------------------------------------------
 func main() {
-	root = utils.GetDirectory(flag.Arg(0), ".")
-
-	// Load config and prepare for parsing directory
-	count.Initialize(root, *showDirectories, *showFiles, *showOnlyIncluded, *showOnlyExcluded, *showBigFiles)
-
 	// Processing the given directory
-	var err = walk.Walk(root, forEachEntry)
+	var err = walk.Walk(root, forEachFileSystemEntry)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		os.Exit(-1)
 	}
 
 	// Show result
-	count.Print()
+	printResult()
 }

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package utils
+package main
 
 import (
 	"bytes"
@@ -17,15 +17,13 @@ import (
 const (
 	windowsNewline       = "\r\n"
 	unixNewline          = "\n"
-	macNewline           = "\r"
+	oldMacNewline        = "\r"
 	unixPathSeparator    = "/"
 	windowsPathSeparator = "\\"
 )
 
-// ------------------------------------------
-// DetermineNewline
-// ------------------------------------------
-func DetermineNewline(stringWithNewline string) string {
+// determineNewline
+func determineNewline(stringWithNewline string) string {
 	if strings.Contains(stringWithNewline, windowsNewline) {
 		return windowsNewline
 	}
@@ -34,17 +32,15 @@ func DetermineNewline(stringWithNewline string) string {
 		return unixNewline
 	}
 
-	if strings.Contains(stringWithNewline, macNewline) {
-		return macNewline
+	if strings.Contains(stringWithNewline, oldMacNewline) {
+		return oldMacNewline
 	}
 
 	return windowsNewline
 }
 
-// ------------------------------------------
-// IsInString
-// ------------------------------------------
-func IsInString(stringToSearch string, stringsToSearchFor []string) bool {
+// isInString
+func isInString(stringToSearch string, stringsToSearchFor []string) bool {
 	var isFound = false
 
 	for _, searchItem := range stringsToSearchFor {
@@ -57,10 +53,8 @@ func IsInString(stringToSearch string, stringsToSearchFor []string) bool {
 	return isFound
 }
 
-// ------------------------------------------
-// IsInSlice
-// ------------------------------------------
-func IsInSlice(sliceToSearch []string, stringToSearchFor string) bool {
+// isInSlice
+func isInSlice(sliceToSearch []string, stringToSearchFor string) bool {
 	var isFound = false
 
 	for _, searchItem := range sliceToSearch {
@@ -73,17 +67,13 @@ func IsInSlice(sliceToSearch []string, stringToSearchFor string) bool {
 	return isFound
 }
 
-// ------------------------------------------
-// IntToString
-// ------------------------------------------
-func IntToString(n int, separator rune) string {
-	return Int64ToString(int64(n), separator)
+// intToString
+func intToString(n int, separator rune) string {
+	return int64ToString(int64(n), separator)
 }
 
-// ------------------------------------------
-// Int64ToString
-// ------------------------------------------
-func Int64ToString(n int64, separator rune) string {
+// int64ToString
+func int64ToString(n int64, separator rune) string {
 	var s = strconv.FormatInt(n, 10)
 	var startOffset = 0
 	var buff bytes.Buffer
@@ -112,11 +102,9 @@ func Int64ToString(n int64, separator rune) string {
 	return buff.String()
 }
 
-// ------------------------------------------
-// Round return rounded version of x with prec precision.
+// round return rounded version of x with prec precision.
 // http://grokbase.com/t/gg/golang-nuts/12ag1s0t5y/go-nuts-re-function-round
-// ------------------------------------------
-func Round(x float64, prec int) float64 {
+func round(x float64, prec int) float64 {
 	var rounder float64
 	var pow = math.Pow(10, float64(prec))
 	var intermed = x * pow
@@ -131,10 +119,8 @@ func Round(x float64, prec int) float64 {
 	return rounder / pow
 }
 
-// ------------------------------------------
-// GetDirectory
-// ------------------------------------------
-func GetDirectory(pathFromFlag, defaultPath string) string {
+// getDirectory
+func getDirectory(pathFromFlag, defaultPath string) string {
 	var err error
 
 	// First non-flag argument should be the starting directory
@@ -165,18 +151,14 @@ func GetDirectory(pathFromFlag, defaultPath string) string {
 	return path
 }
 
-// ------------------------------------------
-// IsWindows
-// ------------------------------------------
-func IsWindows() bool {
+// isWindows
+func isWindows() bool {
 	return strings.Index(os.Getenv("OS"), "Windows") >= 0
 }
 
-// ------------------------------------------
-// GetPathSeparator
-// ------------------------------------------
-func GetPathSeparator() string {
-	if IsWindows() {
+// getPathSeparator
+func getPathSeparator() string {
+	if isWindows() {
 		return windowsPathSeparator
 	}
 	return unixPathSeparator
