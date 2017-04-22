@@ -21,14 +21,13 @@ var (
 	showOnlyExcluded = flag.Bool("excl", false, "show only excluded files/directories.")
 	showBigFiles     = flag.Int("big", 0, "show the x largest files")
 	help             = flag.Bool("?", false, "this help information")
+	configFilename   string
 	config           Config
+	countResult      Result
+	exclusions       Exclusions
+	pathSeparator    = getPathSeparator()
+	bigFiles         = make(fileSizes, 0)
 )
-
-var countResult Result
-var exclusions Exclusions
-var pathSeparator = getPathSeparator()
-var bigFiles = make(fileSizes, 0)
-var configFilename string
 
 // init
 func init() {
