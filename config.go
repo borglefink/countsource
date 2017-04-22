@@ -12,6 +12,12 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/kardianos/osext"
+)
+
+const (
+	defaultConfigFileName = "countsource.config"
 )
 
 // Config contains the programs config, read from file
@@ -51,19 +57,30 @@ func (sc Config) setupResult() Result {
 	return r
 }
 
+func getExecutableName() string {
+	filename, err := osext.Executable()
+
+	if err != nil {
+		filename, _ = filepath.Abs(os.Args[0])
+	}
+
+	return filename
+}
+
 // getConfigFileName
 func getConfigFileName() string {
-	var fullFilePath, _ = filepath.Abs(os.Args[0])
+	var fullFilePath = defaultConfigFileName
+	if _, err := os.Stat(defaultConfigFileName); os.IsNotExist(err) {
+		fullFilePath = getExecutableName()
 
-	// Set the config file name to [thisexecutablepath\thisexecutablefilename].config
-	var filename = fmt.Sprintf(
-		"%s%s%s",
-		filepath.Dir(fullFilePath),
-		pathSeparator,
-		strings.Replace(filepath.Base(fullFilePath), ".exe", "", 1),
-	)
+		if strings.Index(fullFilePath, ".exe") > 0 {
+			fullFilePath = strings.Replace(fullFilePath, ".exe", "", 1)
+		}
 
-	return filename + ".config"
+		fullFilePath = fullFilePath + ".config"
+	}
+
+	return fullFilePath
 }
 
 // loadConfig loads the config from file

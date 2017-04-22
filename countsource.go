@@ -50,7 +50,7 @@ func init() {
 // usage
 func usage() {
 	var executableName = filepath.Base(os.Args[0])
-	fmt.Fprintf(os.Stderr, "\nCOUNTSOURCE (C) Copyright 2014-2015 Erlend Johannessen\n")
+	fmt.Fprintf(os.Stderr, "\nCOUNTSOURCE (C) Copyright 2014-2017 Erlend Johannessen\n")
 	fmt.Fprintf(os.Stderr, "%s counts sourcecode lines for given directory and sub-directories.\n", executableName)
 	fmt.Fprintf(os.Stderr, "\nUsage: %s [dirname] \n", executableName)
 	fmt.Fprintf(os.Stderr, "  dirname: Name of directory with source code to count lines for. Uses current directory if no directory given.\n")
