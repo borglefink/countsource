@@ -92,13 +92,14 @@ func getConfigFileName(suggestedConfigFilename string) string {
 }
 
 // loadConfig loads the config from file
-func loadConfig() Config {
+func loadConfig(configFilename string) Config {
 	var c Config
 
 	// Read whole the file
 	var jsonstring, err = ioutil.ReadFile(configFilename)
 	if err != nil {
-		c = createConfig()
+		c = createConfig(configFilename)
+		return c
 	}
 
 	// Strip comments from config file
@@ -117,7 +118,7 @@ func loadConfig() Config {
 }
 
 // createConfig creates the config, if it doesn't exist
-func createConfig() Config {
+func createConfig(configFilename string) Config {
 	var sc Config
 
 	sc.Extensions = []string{".go"}

@@ -22,7 +22,6 @@ var (
 	showBigFiles            = flag.Int("big", 0, "show the x largest files")
 	help                    = flag.Bool("?", false, "this help information")
 	suggestedConfigFilename = flag.String("c", "", "countsource configuration file")
-	configFilename          string
 	config                  Config
 	countResult             Result
 	exclusions              Exclusions
@@ -40,8 +39,8 @@ func init() {
 	}
 
 	// Load config and prepare for parsing directory
-	configFilename = getConfigFileName(*suggestedConfigFilename)
-	config = loadConfig()
+	var configFilename = getConfigFileName(*suggestedConfigFilename)
+	config = loadConfig(configFilename)
 	exclusions = config.getExclusions()
 	countResult = config.setupResult()
 	printAnalyticsHeader()

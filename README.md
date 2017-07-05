@@ -2,13 +2,13 @@
 
 *countsource* is a small command line utility for counting source code lines, written in Go (http://golang.org/). 
 It can also count binaries (number of files and filesize).
-There is a config file to configure what to count (see config section below).
+There is a config file to configure what files to count (see config section below).
 When counting source code lines, newline will be determined as type windows (CRLF), unix (LF) or older mac (CR) for each file.
 
 The result will look along the lines of this:
 ```
 Directory processed:
-c:\mydirectory\exampleprojectdirectory
+c:\projectdirectory
 ---------------------------------------------------------------
 filetype        #files       #lines  line%          size  size%
 ---------------------------------------------------------------
@@ -24,20 +24,22 @@ Total:             159        8 304  100.0       766 642  100.0
 ## Usage
 
 Give a directory as a parameter. If none is given, the current directory is used.
-All sub-directories will be included in the result as well.
+All sub-directories will be searched as well, and included in the result.
 
 ```
-countsource [directory] [--dir] [--file] [--inc] [--excl]
+countsource [directory] [-c fullpathtoconfigfile] [-dir] [-file] [-inc] [-excl]
 ```
 
-The optional parameters is for analysis/debug, showing which directories or files are 
-included or excluded. By default both included and excluded items are shown.
+The optional parameters *-dir*, *-file* *-inc* and *-excl* are for analysis/debug, showing which directories or files are included or excluded. If *-dir* or *-file* is given, both included and excluded items are shown, unless *-inc* or *-excl* are added.
 
-Use *countsource --?* to show usage.
+Use *countsource -?* to show usage.
 
 ## Config file
 
-The config file is expected to be found in the same directory as the executable.
+The configuration file can be specified with *-c "full config file name"*. 
+
+If no config file is specified, it is searched for in the current directory. If not found in the current directory, the config is expected to be found in the same directory as the executable. 
+
 If a config file does not exist, one is created, with simple default values 
 along the lines of this:
 
@@ -70,13 +72,12 @@ along the lines of this:
 Note that directories can be specified in a bit more detail, to be sure to exclude elements you don't want counted.
 
 It is possible to put comments in the config file. 
-Note that comments are not allowed in json, so these comments are stripped from the config when interpreting it.
-Only Go-type comments are allowed, like line type comments starting with //, or block comments enclosed by /* and */.
+Note that comments are not allowed in json, so these comments are stripped from the config file when it is used.
+Only Go-type comments are allowed, single line comments starting with //, or block comments enclosed by /* and */.
 
 ## Background
 
-I wanted to count the number of source code lines for all the source code in an ASP.NET MVC project 
-to keep track of the size of it. So I just wrote this.
+I wanted to count the number of source code lines for all the source code in an ASP.NET MVC project to keep track of the size of it. So I just wrote this.
 
 ## License
 
