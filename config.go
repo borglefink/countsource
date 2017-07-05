@@ -68,9 +68,17 @@ func getExecutableName() string {
 }
 
 // getConfigFileName
-func getConfigFileName() string {
+func getConfigFileName(suggestedConfigFilename string) string {
 	var fullFilePath = defaultConfigFileName
-	if _, err := os.Stat(defaultConfigFileName); os.IsNotExist(err) {
+
+	if len(suggestedConfigFilename) > 0 {
+		if _, err := os.Stat(suggestedConfigFilename); err == nil {
+			fullFilePath = suggestedConfigFilename
+			return fullFilePath
+		}
+	}
+
+	if _, err := os.Stat(fullFilePath); os.IsNotExist(err) {
 		fullFilePath = getExecutableName()
 
 		if strings.Index(fullFilePath, ".exe") > 0 {

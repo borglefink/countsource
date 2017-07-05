@@ -14,19 +14,20 @@ import (
 )
 
 var (
-	root             = getDirectory(flag.Arg(0), ".")
-	showDirectories  = flag.Bool("dir", false, "show exclusion status of directories in path.")
-	showFiles        = flag.Bool("file", false, "show exclusion status of files in path.")
-	showOnlyIncluded = flag.Bool("inc", false, "show only included files/directories.")
-	showOnlyExcluded = flag.Bool("excl", false, "show only excluded files/directories.")
-	showBigFiles     = flag.Int("big", 0, "show the x largest files")
-	help             = flag.Bool("?", false, "this help information")
-	configFilename   string
-	config           Config
-	countResult      Result
-	exclusions       Exclusions
-	pathSeparator    = getPathSeparator()
-	bigFiles         = make(fileSizes, 0)
+	root                    = getDirectory(flag.Arg(0), ".")
+	showDirectories         = flag.Bool("dir", false, "show exclusion status of directories in path.")
+	showFiles               = flag.Bool("file", false, "show exclusion status of files in path.")
+	showOnlyIncluded        = flag.Bool("inc", false, "show only included files/directories.")
+	showOnlyExcluded        = flag.Bool("excl", false, "show only excluded files/directories.")
+	showBigFiles            = flag.Int("big", 0, "show the x largest files")
+	help                    = flag.Bool("?", false, "this help information")
+	suggestedConfigFilename = flag.String("c", "", "countsource configuration file")
+	configFilename          string
+	config                  Config
+	countResult             Result
+	exclusions              Exclusions
+	pathSeparator           = getPathSeparator()
+	bigFiles                = make(fileSizes, 0)
 )
 
 // init
@@ -39,7 +40,7 @@ func init() {
 	}
 
 	// Load config and prepare for parsing directory
-	configFilename = getConfigFileName()
+	configFilename = getConfigFileName(*suggestedConfigFilename)
 	config = loadConfig()
 	exclusions = config.getExclusions()
 	countResult = config.setupResult()
