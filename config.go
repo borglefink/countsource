@@ -112,8 +112,8 @@ func loadConfig() Config {
 func createConfig() Config {
 	var sc Config
 
-	sc.Extensions = []string{".css"}
-	sc.BinaryExtensions = []string{".jpg"}
+	sc.Extensions = []string{".go"}
+	sc.BinaryExtensions = []string{".exe", ".png"}
 	sc.ExcludeDirectories = []string{".git"}
 	sc.ExcludeFiles = []string{filepath.Base(configFilename)}
 
