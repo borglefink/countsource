@@ -38,10 +38,10 @@ Use *countsource -?* to show usage.
 
 The configuration file can be specified with *-c "full config file name"*. 
 
-If no config file is specified, it is searched for in the current directory. If not found in the current directory, the config is expected to be found in the same directory as the executable. 
+If no config file is specified, it is read from the current directory. If not found in the current directory, the config is expected to be found in the same directory as the executable. 
 
-If a config file does not exist, one is created, with simple default values 
-along the lines of this:
+If a config file does not exist, one is created in the current directory,
+with simple default values similar to the following:
 
 ```JSON
 /*
