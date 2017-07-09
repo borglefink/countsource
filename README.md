@@ -1,3 +1,6 @@
+[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.png?v=103)](https://opensource.org/licenses/mit-license.php)
+[![works badge](https://cdn.rawgit.com/nikku/works-on-my-machine/v0.2.0/badge.svg)](https://github.com/nikku/works-on-my-machine)
+
 ## Description
 
 *countsource* is a small command line utility for counting source code lines, written in Go (http://golang.org/). 
@@ -38,24 +41,23 @@ Use *countsource -?* to show usage.
 
 The configuration file can be specified with *-c "full config file name"*. 
 
-If no config file is specified, it is read from the current directory. If not found in the current directory, the config is expected to be found in the same directory as the executable. 
+If no config file is specified, it is read from the current directory. 
+If not found in the current directory, the config is expected to be found in the same directory as the executable. 
 
 If a config file does not exist, one is created in the current directory,
 with default values similar to the following:
 
 ```JSON
 /*
- * Config file for exampleproject
+ * Config file for example project
  */
 {
   "Extensions": [
     ".css",
     ".html",
-    ".js"
-  ],
-  "BinaryExtensions": [
-    ".jpg",
-    ".png"
+    ".js",
+    ".jpg", // only file size counted
+    ".png"  // only file size counted
   ],
   "ExcludeDirectories": [
     "bin",
@@ -72,8 +74,14 @@ with default values similar to the following:
 Note that directories can be specified in a bit more detail, to be sure to exclude elements you don't want counted.
 
 It is possible to put comments in the config file. 
-Note that comments are not allowed in json, so these comments are stripped from the config file when it is used.
+Note that comments are normally not allowed in json, so these comments are stripped from the config file before it is read.
 Only Go-type comments are allowed, single line comments starting with //, or block comments enclosed by /* and */.
+
+## Installation
+
+Clone the repository into your GOPATH somewhere and do a **go build** or **go install**.
+Create a config file for a project you want to count source code for, and put the config file in the root of that directory.
+If you have several projects using identical config files, use a single config file and refer to it with the *-c* parameter when counting.
 
 ## Background
 
