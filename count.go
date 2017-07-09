@@ -109,8 +109,13 @@ func countExtension(filename string, f os.FileInfo) {
 				return
 			}
 
+			var isBinary = isBinaryFormat(contents)
+
 			// Binary files will not have "number of lines"
-			if !isBinaryFormat(contents) {
+			// but might need to have the binary flag set
+			if isBinary && !countResult.Extensions[ext].IsBinary {
+				countResult.Extensions[ext].IsBinary = true
+			} else {
 				var stringContents = string(contents)
 				var newline = determineNewline(stringContents)
 
