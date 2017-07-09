@@ -101,23 +101,23 @@ func countExtension(filename string, f os.FileInfo) {
 			countResult.Extensions[ext].Filesize += size
 			countResult.TotalSize += size
 
+			// Slurp the whole file into memory
+			var contents, err = ioutil.ReadFile(filename)
+
+			if err != nil {
+				fmt.Printf("Problem reading inputfile %s, error:%v\n", filename, err)
+				return
+			}
+
 			// Binary files will not have "number of lines"
-			if !countResult.Extensions[ext].IsBinary {
-				// Slurp the whole file into memory
-				var contents, err = ioutil.ReadFile(filename)
+			if !isBinaryFormat(contents) {
+				var stringContents = string(contents)
+				var newline = determineNewline(stringContents)
 
-				// Ok, count lines
-				if err == nil {
-					var stringContents = string(contents)
-					var newline = determineNewline(stringContents)
-
-					var numberOfLines = len(strings.Split(stringContents, newline))
-					countResult.Extensions[ext].NumberOfLines += numberOfLines
-					countResult.TotalNumberOfLines += numberOfLines
-					bigFiles = append(bigFiles, fileSize{f.Name(), size, numberOfLines}) // filename
-				} else {
-					fmt.Printf("Problem reading inputfile %s, error:%v\n", filename, err)
-				}
+				var numberOfLines = len(strings.Split(stringContents, newline))
+				countResult.Extensions[ext].NumberOfLines += numberOfLines
+				countResult.TotalNumberOfLines += numberOfLines
+				bigFiles = append(bigFiles, fileSize{f.Name(), size, numberOfLines})
 			}
 		}
 	}

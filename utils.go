@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"fmt"
 	"math"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -162,4 +163,10 @@ func getPathSeparator() string {
 		return windowsPathSeparator
 	}
 	return unixPathSeparator
+}
+
+// isBinaryFormat
+func isBinaryFormat(data []byte) bool {
+	var mimetype = http.DetectContentType(data)
+	return strings.Index(mimetype, "text/plain") < 0
 }
