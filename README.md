@@ -50,14 +50,15 @@ with default values similar to the following:
 ```JSON
 /*
  * Config file for example project
+ * FOr binary files, only file size is counted
  */
 {
   "Extensions": [
     ".css",
     ".html",
     ".js",
-    ".jpg", // only file size counted
-    ".png"  // only file size counted
+    ".jpg",
+    ".png"
   ],
   "ExcludeDirectories": [
     "bin",
