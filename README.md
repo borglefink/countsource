@@ -79,7 +79,7 @@ Only Go-type comments are allowed, single line comments starting with //, or blo
 
 ## Installation
 
-Clone the repository into your GOPATH somewhere and do a **go build** or **go install**.
+Clone the repository into your GOPATH somewhere and do a **go build**.
 Create a config file for a project you want to count source code for, and put the config file in the root of that directory.
 If you have several projects using identical config files, use a single config file and refer to it with the *-c* parameter when counting.
 
