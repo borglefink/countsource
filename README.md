@@ -78,7 +78,7 @@ It is possible to put comments in the config file.
 Note that comments are normally not allowed in json, so these comments are stripped from the config file before it is read.
 Only Go-type comments are allowed, single line comments starting with //, or block comments enclosed by /* and */.
 
-## Installation
+## Install
 
 Clone the repository into your GOPATH somewhere and do a **go build**.
 Create a config file for a project you want to count source code for, and put the config file in the root of that directory.
