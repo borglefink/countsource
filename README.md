@@ -50,7 +50,7 @@ with default values similar to the following:
 ```JSON
 /*
  * Config file for example project
- * FOr binary files, only file size is counted
+ * For binary files, only file size is counted
  */
 {
   "Extensions": [
