@@ -168,5 +168,7 @@ func getPathSeparator() string {
 // isBinaryFormat
 func isBinaryFormat(data []byte) bool {
 	var mimetype = http.DetectContentType(data)
-	return strings.Index(mimetype, "text/plain") < 0
+	return strings.Index(mimetype, "text/plain") < 0 &&
+		strings.Index(mimetype, "text/html") < 0 &&
+		strings.Index(mimetype, "text/xml") < 0
 }
