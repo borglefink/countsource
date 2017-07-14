@@ -2,6 +2,7 @@ package main
 
 import "testing"
 
+// determineNewline tests
 func TestDetermineWindowsNewline(t *testing.T) {
 	var actualResult = determineNewline("Hello\r\n")
 	var expectedResult = windowsNewline
@@ -38,6 +39,7 @@ func TestDetermineDefaultWindowsNewline(t *testing.T) {
 	}
 }
 
+// isInString tests
 func TestIsInStringFound(t *testing.T) {
 	var actualResult = isInString("Hello", []string{"xx", "He"})
 	var expectedResult = true
@@ -56,6 +58,7 @@ func TestIsInStringNotFound(t *testing.T) {
 	}
 }
 
+// isInSlice tests
 func TestIsInSliceFound(t *testing.T) {
 	var actualResult = isInSlice([]string{"Hello", "Hallo", "Hullu"}, "Hallo")
 	var expectedResult = true
@@ -74,6 +77,7 @@ func TestIsInSliceNotFound(t *testing.T) {
 	}
 }
 
+// int64ToString tests
 func TestInt64ToString(t *testing.T) {
 	var feed = int64(100000)
 	var actualResult = int64ToString(feed, ' ')
@@ -84,6 +88,7 @@ func TestInt64ToString(t *testing.T) {
 	}
 }
 
+// round tests
 func TestRoundUp(t *testing.T) {
 	var feed = float64(11.45)
 	var actualResult = round(feed, 1)
@@ -104,6 +109,7 @@ func TestRoundDown(t *testing.T) {
 	}
 }
 
+// isBinaryFormat tests
 func TestIsBinaryFormatFalse(t *testing.T) {
 	var actualResult = isBinaryFormat([]byte("<html><body><br/></body></html>"))
 	var expectedResult = false
