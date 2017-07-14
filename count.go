@@ -92,38 +92,40 @@ func countExtension(filename string, f os.FileInfo) {
 		// Is the extension one of the relevant ones?
 		var _, willBeCounted = countResult.Extensions[ext]
 
-		// If yes, proceed with counting
-		if willBeCounted {
-			countResult.Extensions[ext].NumberOfFiles++
-			countResult.TotalNumberOfFiles++
+		// If no, exit
+		if !willBeCounted {
+			return
+		}
 
-			var size = f.Size()
-			countResult.Extensions[ext].Filesize += size
-			countResult.TotalSize += size
+		countResult.Extensions[ext].NumberOfFiles++
+		countResult.TotalNumberOfFiles++
 
-			// Slurp the whole file into memory
-			var contents, err = ioutil.ReadFile(filename)
+		var size = f.Size()
+		countResult.Extensions[ext].Filesize += size
+		countResult.TotalSize += size
 
-			if err != nil {
-				fmt.Printf("Problem reading inputfile %s, error:%v\n", filename, err)
-				return
-			}
+		// Slurp the whole file into memory
+		var contents, err = ioutil.ReadFile(filename)
 
-			var isBinary = isBinaryFormat(contents)
+		if err != nil {
+			fmt.Printf("Problem reading inputfile %s, error:%v\n", filename, err)
+			return
+		}
 
-			// Binary files will not have "number of lines"
-			// but might need to have the binary flag set
-			if isBinary && !countResult.Extensions[ext].IsBinary {
-				countResult.Extensions[ext].IsBinary = true
-			} else {
-				var stringContents = string(contents)
-				var newline = determineNewline(stringContents)
+		var isBinary = isBinaryFormat(contents)
 
-				var numberOfLines = len(strings.Split(stringContents, newline))
-				countResult.Extensions[ext].NumberOfLines += numberOfLines
-				countResult.TotalNumberOfLines += numberOfLines
-				bigFiles = append(bigFiles, fileSize{f.Name(), size, numberOfLines})
-			}
+		// Binary files will not have "number of lines"
+		// but might need to have the binary flag set
+		if isBinary && !countResult.Extensions[ext].IsBinary {
+			countResult.Extensions[ext].IsBinary = true
+		} else {
+			var stringContents = string(contents)
+			var newline = determineNewline(stringContents)
+
+			var numberOfLines = len(strings.Split(stringContents, newline))
+			countResult.Extensions[ext].NumberOfLines += numberOfLines
+			countResult.TotalNumberOfLines += numberOfLines
+			bigFiles = append(bigFiles, fileSize{f.Name(), size, numberOfLines})
 		}
 	}
 }
