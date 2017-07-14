@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	root                    = getDirectory(flag.Arg(0), ".")
+	root                    = ""
 	showDirectories         = flag.Bool("dir", false, "show exclusion status of directories in path.")
 	showFiles               = flag.Bool("file", false, "show exclusion status of files in path.")
 	showOnlyIncluded        = flag.Bool("inc", false, "show only included files/directories.")
@@ -37,6 +37,9 @@ func init() {
 	if *help {
 		usage()
 	}
+
+	// Find given drirectory
+	root = getDirectory(flag.Arg(0), ".")
 
 	// Load config and prepare for parsing directory
 	var configFilename = getConfigFileName(*suggestedConfigFilename)
