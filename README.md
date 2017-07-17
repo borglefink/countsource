@@ -1,4 +1,4 @@
-[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.png?v=103)](https://opensource.org/licenses/mit-license.php)
+[![MIT License](https://badges.frapsoft.com/os/mit/mit.png?v=103)](https://opensource.org/licenses/mit-license.php)
 [![works badge](https://cdn.rawgit.com/nikku/works-on-my-machine/v0.2.0/badge.svg)](https://github.com/nikku/works-on-my-machine)
 
 ## Description
@@ -80,9 +80,14 @@ Only Go-type comments are allowed, single line comments starting with //, or blo
 
 ## Install
 
-Clone the repository into your GOPATH somewhere and do a **go build**.
+Clone the repository into your GOPATH somewhere and resolve the only third party dependency,
+then do a **go build** or a **go install**.
+
 Create a config file for a project you want to count source code for, and put the config file in the root of that directory.
 If you have several projects using identical config files, use a single config file and refer to it with the *-c* parameter when counting.
+
+_countsource_ is dependent upon Michael T Jones' fast parallel filesystem traversal package. See [github.com/MichaelTJones/walk](https://github.com/MichaelTJones/walk).
+
 
 ## Background
 
