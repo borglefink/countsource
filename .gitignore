@@ -5,3 +5,7 @@ debug.config
 
 # Any Windows command files
 *.cmd
+
+# Executables
+countsource
+countsource.exe

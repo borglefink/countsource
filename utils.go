@@ -136,7 +136,7 @@ func getDirectory(pathFromFlag, defaultPath string) string {
 	path, err = filepath.Abs(path)
 	if err != nil {
 		fmt.Printf("Directory [%v] does not exist.\n", path)
-		os.Exit(-1)
+		os.Exit(1)
 	}
 
 	// Removing quotes, if any
@@ -146,7 +146,7 @@ func getDirectory(pathFromFlag, defaultPath string) string {
 	_, err = os.Stat(path)
 	if err != nil {
 		fmt.Printf("Directory [%v] does not exist.\n", path)
-		os.Exit(-1)
+		os.Exit(1)
 	}
 
 	return path

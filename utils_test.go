@@ -1,6 +1,11 @@
 package main
 
-import "testing"
+import (
+	"os"
+	"os/exec"
+	"strings"
+	"testing"
+)
 
 // determineNewline tests
 func TestDetermineWindowsNewline(t *testing.T) {
@@ -122,6 +127,56 @@ func TestIsBinaryFormatFalse(t *testing.T) {
 func TestIsBinaryFormatTrue(t *testing.T) {
 	var actualResult = isBinaryFormat([]byte("‰PNG IHDR  h     ‰"))
 	var expectedResult = true
+
+	if actualResult != expectedResult {
+		t.Fatalf("Expected %v but got %v", expectedResult, actualResult)
+	}
+}
+
+func TestRound(t *testing.T) {
+	type roundTest struct {
+		number    float64
+		precision int
+		expected  float64
+	}
+	var roundTests = []roundTest{
+		{2.45454, 1, 2.5},
+		{2.45454, 2, 2.45},
+		{2.45454, 3, 2.455},
+		{2.45454, 4, 2.4545},
+		{2.45454, 0, 2.0},
+	}
+
+	for _, tt := range roundTests {
+		var actual = round(tt.number, tt.precision)
+		if actual != tt.expected {
+			t.Fatalf("Rounding %v with precision %v. Expected %v but got %v", tt.number, tt.precision, tt.expected, actual)
+		}
+	}
+}
+
+//func getDirectory(pathFromFlag, defaultPath string) string {
+func TestGetDirectoryNotExist(t *testing.T) {
+
+	if os.Getenv("BE_GETDIRECTORY") == "1" {
+		getDirectory("sdsdf", "")
+		return
+	}
+
+	var cmd = exec.Command(os.Args[0], "-test.run=TestGetDirectoryNotExist")
+	cmd.Env = append(os.Environ(), "BE_GETDIRECTORY=1")
+
+	var err = cmd.Run()
+
+	if e, ok := err.(*exec.ExitError); ok && !e.Success() {
+		return
+	}
+	t.Fatalf("Expected error but got %v", err)
+}
+
+func TestIsWindows(t *testing.T) {
+	var actualResult = isWindows()
+	var expectedResult = strings.Index(os.Getenv("OS"), "Windows") >= 0
 
 	if actualResult != expectedResult {
 		t.Fatalf("Expected %v but got %v", expectedResult, actualResult)
