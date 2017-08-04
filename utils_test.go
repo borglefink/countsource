@@ -98,23 +98,26 @@ func TestInt64ToString(t *testing.T) {
 }
 
 // round tests
-func TestRoundUp(t *testing.T) {
-	var feed = float64(11.45)
-	var actualResult = round(feed, 1)
-	var expectedResult = float64(11.5)
-
-	if actualResult != expectedResult {
-		t.Fatalf("Expected %v but got %v", expectedResult, actualResult)
+func TestRound(t *testing.T) {
+	var roundTests = []struct {
+		number    float64
+		precision int
+		expected  float64
+	}{
+		{1.45, 1, 1.5},
+		{1.44, 1, 1.4},
+		{2.45454, 0, 2.0},
+		{2.45454, 1, 2.5},
+		{2.45454, 2, 2.45},
+		{2.45454, 3, 2.455},
+		{2.45454, 4, 2.4545},
 	}
-}
 
-func TestRoundDown(t *testing.T) {
-	var feed = float64(11.44)
-	var actualResult = round(feed, 1)
-	var expectedResult = float64(11.4)
-
-	if actualResult != expectedResult {
-		t.Fatalf("Expected %v but got %v", expectedResult, actualResult)
+	for _, tt := range roundTests {
+		var actual = round(tt.number, tt.precision)
+		if actual != tt.expected {
+			t.Fatalf("Rounding %v with precision %v. Expected %v but got %v", tt.number, tt.precision, tt.expected, actual)
+		}
 	}
 }
 
@@ -134,28 +137,6 @@ func TestIsBinaryFormatTrue(t *testing.T) {
 
 	if actualResult != expectedResult {
 		t.Fatalf("Expected %v but got %v", expectedResult, actualResult)
-	}
-}
-
-func TestRound(t *testing.T) {
-	type roundTest struct {
-		number    float64
-		precision int
-		expected  float64
-	}
-	var roundTests = []roundTest{
-		{2.45454, 1, 2.5},
-		{2.45454, 2, 2.45},
-		{2.45454, 3, 2.455},
-		{2.45454, 4, 2.4545},
-		{2.45454, 0, 2.0},
-	}
-
-	for _, tt := range roundTests {
-		var actual = round(tt.number, tt.precision)
-		if actual != tt.expected {
-			t.Fatalf("Rounding %v with precision %v. Expected %v but got %v", tt.number, tt.precision, tt.expected, actual)
-		}
 	}
 }
 
