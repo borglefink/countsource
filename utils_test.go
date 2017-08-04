@@ -7,6 +7,10 @@ import (
 	"testing"
 )
 
+const (
+	notexistdirectory = "thisshouldnotbeasubdirectoryinthecurrentdirectory"
+)
+
 // determineNewline tests
 func TestDetermineWindowsNewline(t *testing.T) {
 	var actualResult = determineNewline("Hello\r\n")
@@ -157,9 +161,8 @@ func TestRound(t *testing.T) {
 
 //func getDirectory(pathFromFlag, defaultPath string) string {
 func TestGetDirectoryNotExist(t *testing.T) {
-
 	if os.Getenv("BE_GETDIRECTORY") == "1" {
-		getDirectory("sdsdf", "")
+		getDirectory(notexistdirectory, "")
 		return
 	}
 
